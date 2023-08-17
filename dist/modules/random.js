@@ -44,14 +44,26 @@ export function filter(iterable, f) {
             return this;
         },
         next() {
-            let v = iter.next();
-            console.log("----v-----");
-            console.log(v);
-            while (!f(v.value)) {
-                console.log("skip");
-                v = iter.next();
+            // let v = iter.next();
+            // console.log("----v-----");
+            // console.log(v);
+            // console.log(v.value);
+            // console.log(v.done);
+            while (true) {
+                let v = iter.next();
+                if (v.done) {
+                    console.log("end of iter");
+                    return v;
+                }
+                if (!f(v.value)) {
+                    // v = iter.next();
+                    console.log("skip " + v.value);
+                    continue;
+                }
+                return v;
+                // console.log("skip");
             }
-            return v;
+            // return v;
         }
     };
 }

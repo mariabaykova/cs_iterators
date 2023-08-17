@@ -8,7 +8,7 @@ export function enumerate(iterable) {
         next() {
             let v = iter.next();
             if (v.done) {
-                return v;
+                return { done: true, value: undefined };
             }
             return {
                 value: [i++, v.value],

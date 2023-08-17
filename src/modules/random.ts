@@ -42,22 +42,34 @@ export function take<T> ( iterable: Iterable<T>, limit: number ): IterableIterat
 
 // ## Необходимо написать функцию filter, которая принимает любой Iterable объект и функцию-предикат. И возвращает итератор по элементам которые удовлетворяют предикату.
 
-export function filter<T> ( iterable: Iterable<T>, f: ( a: any ) => boolean ): IterableIterator<T> {
+export function filter<T> ( iterable: Iterable<T>, f: ( a: T ) => boolean ): IterableIterator<T> {
     const iter = iterable[Symbol.iterator]();
     return {
         [Symbol.iterator]() {
             return this;
         },
         next () {
-            let v = iter.next();
-            console.log("----v-----");
-            console.log(v);
+            // let v = iter.next();
+            // console.log("----v-----");
+            // console.log(v);
+            // console.log(v.value);
+            // console.log(v.done);
 
-            while ( !f(v.value) ) {
-                console.log("skip");
-                v = iter.next();
+            while ( true ) {
+                let v = iter.next();
+                if ( v.done ) {
+                    console.log("end of iter");
+                    return v;
+                }
+                if ( !f(v.value) ) {
+                    // v = iter.next();
+                    console.log("skip " + v.value);
+                    continue;
+                }
+                return v;
+                // console.log("skip");
             }
-            return v;
+            // return v;
         }
     }
 }
